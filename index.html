@@ -1,19 +1,56 @@
 <!DOCTYPE html>
-<html>
-<body>
-
-<h2>Type crap here</h2>
-
-<form>
-  <label for="fname">First name:</label><br>
-  <input type="text" id="fname" name="fname" value="Zac"><br>
-  <label for="lname">Last name:</label><br>
-  <input type="text" id="lname" name="lname" value="V">
-</form>
-
-<p>poggers dude.</p>
-
-<p>(20 characters max or smth).</p>
-
-</body>
-</html>
+frameRate(180);
+function Molecule(position, velocity){
+    this.p = position;
+    this.v = velocity;
+  this.run = function(){
+    this.update();
+    this.display();
+  };
+  this.update = function(){
+        this.p.x+=this.v.x;
+        this.p.y+=this.v.y;
+        if(this.p.x-5 <= 0 || this.p.x+5 >= width){
+            this.v.x *= -1;
+        } 
+        if(this.p.y-5 <= 0 || this.p.y+5 >= height){
+            this.v.y *= -1;
+        }
+  };
+  this.display = function(){
+        fill(0);
+        noStroke();
+        ellipse(this.p.x, this.p.y, 10, 10);
+  };
+}
+function Gas(quantity) {
+    this.molecules = [];
+    this.init = function(){
+        for(var i = 0; i < quantity; i++){
+            var p = new PVector(random(0, width), random(0, height));
+            var choice1 = [-random(5/3, 5), random(5/3, 5)];
+            var choice2 = [-random(5/3, 5), random(5/3, 5)];
+            var v  = new PVector(choice1[round(random(1))], choice2[round(random(1))]);
+            this.molecules.push(new Molecule(p, v));
+        }
+    };
+    this.collisions = function(){
+        for(var i = this.molecules.length-1; i >= 0; i--){
+            
+        }
+    };
+    this.run = function(){
+        for(var i = this.molecules.length-1; i >= 0; i--) {
+            var g = this.molecules[i];
+            g.run();
+        }
+    };
+}
+var gas = new Gas(100);
+gas.init();
+draw = function() {
+    fill(255, 255, 255, 150);
+    rect(-5, -5, width+10, height+10);
+    gas.run();
+    gas.collisions();
+};
