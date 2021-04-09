@@ -1,7 +1,43 @@
 <!DOCTYPE html>
 
+
+ 
 <input type="text" name="searchPhrase" />
+<a href="javascript: searchExcel();" style="padding: 1px 5px; border: 1px solid black; font-variant: small-caps; background: #efefef; width: 50px; text-decoration: none; color: black; margin-left: 10px;">Search</a>
+<div id="results" style="margin-top: 20px;"></div>
+ 
 
-<a href="javascript: searchExcel();">Search<a/>
+    <script type="text/javascript">
+            
+function searchExcel()
+{
+	var searchPhrase = document.getElementById('searchPhrase').value;
+	var Worksheet = 'C:\\example.xls';
+	var Excel = new ActiveXObject('Excel.Application');
 
-<div id-"results"></div>
+	Excel.Visible = false;
+	var Excel_file = Excel.Workbooks.Open(Worksheet, null, true, null, null, null, true, null, null, false, false, null, null, null);
+
+	var range = Excel_file.ActiveSheet.Range('A:A');
+	var jsRangeArray = new VBArray(range.Value).toArray();
+   
+	var found = false;
+	for(cells in jsRangeArray)
+	{
+		if(jsRangeArray[cells] == searchPhrase)
+		{
+			document.getElementById("results").innerHTML = "Found";
+			found = true;
+		}
+	}
+	
+	if(found == false)
+	{
+		document.getElementById("results").innerHTML = "Not Found";
+	}
+	
+	Excel.ActiveWorkbook.Close(true);
+	Excel.Application.Quit();
+	Excel = null;
+}
+    </script>
